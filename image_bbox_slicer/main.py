@@ -213,9 +213,9 @@ class Slicer(object):
         Private Method
         """
         mapper = {}
-        img_no = 1
 
         for file in sorted(glob.glob(self.IMG_SRC + "/*")):
+            
             file_name = file.split('/')[-1].split('.')[0]
             file_type = file.split('/')[-1].split('.')[-1].lower()
             if file_type.lower() not in IMG_FORMAT_LIST:
@@ -231,6 +231,7 @@ class Slicer(object):
 
             tiles = self.__get_tiles(im.size, tile_size, tile_overlap)
             new_ids = []
+            img_no = 1
             for tile in tiles:
                 new_im = im.crop(tile)
                 img_id_str = str('{:06d}'.format(img_no))
@@ -239,7 +240,7 @@ class Slicer(object):
                         self._ignore_tiles.remove(img_id_str)
                         continue
                 new_im.save(
-                    '{}/{}.{}'.format(self.IMG_DST, img_id_str, file_type))
+                    '{}/{}_{}.{}'.format(self.IMG_DST, file_name, img_id_str, file_type))
                 new_ids.append(img_id_str)
                 img_no += 1
             mapper[file_name] = new_ids
@@ -247,6 +248,7 @@ class Slicer(object):
         print('Obtained {} image slices!'.format(img_no-1))
         return mapper
 
+    
     def slice_bboxes_by_size(self, tile_size, tile_overlap=0.0):
         """Slices each box annotation in the source directory by specified size and overlap.
 
@@ -291,7 +293,6 @@ class Slicer(object):
         """
         Private Method
         """
-        img_no = 1
         mapper = {}
         empty_count = 0
 
@@ -311,7 +312,8 @@ class Slicer(object):
                 tile_w, tile_h = tile_size
             tiles = self.__get_tiles((im_w, im_h), tile_size, tile_overlap)
             tile_ids = []
-
+            
+            img_no = 1
             for tile in tiles:
                 img_no_str = '{:06d}'.format(img_no)
                 voc_writer = Writer('{}'.format(img_no_str), tile_w, tile_h)
@@ -369,7 +371,7 @@ class Slicer(object):
                     self._ignore_tiles.append(img_no_str)
                 else:
                     voc_writer.save(
-                        '{}/{}.xml'.format(self.ANN_DST, img_no_str))
+                        '{}/{}_{}.xml'.format(self.ANN_DST, im_filename, img_no_str))
                     tile_ids.append(img_no_str)
                     img_no += 1
                 empty_count = 0
