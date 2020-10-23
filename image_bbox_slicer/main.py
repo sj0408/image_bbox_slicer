@@ -58,7 +58,7 @@ class Slicer(object):
         self.ANN_DST = os.path.join(os.getcwd(), 'sliced_annotations')
         self.keep_partial_labels = False
         self.save_before_after_map = False
-        self.ignore_empty_tiles = True
+        self.ignore_empty_tiles = False
         self._ignore_tiles = []
         self._just_image_call = True
 
