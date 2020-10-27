@@ -58,13 +58,13 @@ class Slicer(object):
         self.ANN_DST = os.path.join(os.getcwd(), 'sliced_annotations')
         self.keep_partial_labels = False
         self.save_before_after_map = False
-        self.ignore_empty_tiles = False
         self._ignore_tiles = []
         self._just_image_call = True
 
     def config_dirs(self, img_src, ann_src,
                     img_dst=os.path.join(os.getcwd(), 'sliced_images'),
-                    ann_dst=os.path.join(os.getcwd(), 'sliced_annotations')):
+                    ann_dst=os.path.join(os.getcwd(), 'sliced_annotations'),
+                   ignore_empty_tile=False):
         """Configures paths to source and destination directories after validating them. 
 
         Parameters
@@ -93,7 +93,8 @@ class Slicer(object):
         self.IMG_DST = img_dst
         self.ANN_SRC = ann_src
         self.ANN_DST = ann_dst
-
+        self.ignore_empty_tiles = ignore_empty_tile
+        
     def __get_tiles(self, img_size, tile_size, tile_overlap):
         """Generates a list coordinates of all the tiles after validating the values. 
         Private Method.
