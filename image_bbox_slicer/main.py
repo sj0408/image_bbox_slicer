@@ -216,7 +216,7 @@ class Slicer(object):
 
         for file in sorted(glob.glob(self.IMG_SRC + "/*")):
             
-            file_name = file.split('/')[-1].split('.')[0]
+            file_name = os.path.splitext(file.split('/')[-1])[0]
             file_type = file.split('/')[-1].split('.')[-1].lower()
             if file_type.lower() not in IMG_FORMAT_LIST:
                 continue
@@ -300,7 +300,7 @@ class Slicer(object):
             root, objects = extract_from_xml(xml_file)
             im_w, im_h = int(root.find('size')[0].text), int(
                 root.find('size')[1].text)
-            im_filename = root.find('filename').text.split('.')[0]
+            im_filename = os.path.splitext(root.find('filename').text)[0]
 
             if number_tiles > 0:
                 n_cols, n_rows = calc_columns_rows(number_tiles)
